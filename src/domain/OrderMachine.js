@@ -4,81 +4,73 @@ import generateRandomIndex from '../utils/generateRandomIndex.js';
 import findCheapestMenuItem from '../utils/findCheapestMenu.js';
 
 class OrderMachine {
-  static orderList = [];
+  #orderList = [];
 
-  static orderableMoney;
+  #orderableMoney;
 
-  static initialOrderableMoney;
+  #initialOrderableMoney;
 
   constructor(orderableMoney) {
-    OrderMachine.initialOrderableMoney = orderableMoney;
-    OrderMachine.orderableMoney = orderableMoney;
+    this.#initialOrderableMoney = orderableMoney;
+    this.#orderableMoney = orderableMoney;
   }
 
-  static addMainMenus() {
+  #addMainMenus() {
     while (
-      !OrderMachine.orderList.filter((menu) => menu.category === CONDITION.essential_order_category)
-        .length
+      !this.#orderList.filter((menu) => menu.category === CONDITION.essential_order_category).length
     ) {
-      const generatedRandomMainMenu = OrderMachine.createRandomMainMenu();
-      OrderMachine.orderList.push(generatedRandomMainMenu);
-      OrderMachine.orderableMoney -= generatedRandomMainMenu.price;
+      const generatedRandomMainMenu = this.#createRandomMainMenu();
+      this.#orderList.push(generatedRandomMainMenu);
+      this.#orderableMoney -= generatedRandomMainMenu.price;
     }
   }
 
-  static selectValidMenu() {
-    const generatedRandomAllMenu = OrderMachine.createRandomAllMenu();
+  #selectValidMenu() {
+    const generatedRandomAllMenu = this.#createRandomAllMenu();
     if (
-      !OrderMachine.orderList.find((menu) => menu.menu === generatedRandomAllMenu.menu) &&
-      OrderMachine.orderableMoney >= generatedRandomAllMenu.price
+      !this.#orderList.find((menu) => menu.menu === generatedRandomAllMenu.menu) &&
+      this.#orderableMoney >= generatedRandomAllMenu.price
     ) {
       return generatedRandomAllMenu;
     }
     return null;
   }
 
-  static selectAndPurchaseMenus() {
+  #selectAndPurchaseMenus() {
     const cheapestMenuPrice = findCheapestMenuItem(ALL_MENU).price;
 
-    while (
-      OrderMachine.orderableMoney >= cheapestMenuPrice &&
-      OrderMachine.orderList.length < ALL_MENU.length
-    ) {
-      const validMenu = OrderMachine.selectValidMenu();
+    while (this.#orderableMoney >= cheapestMenuPrice && this.#orderList.length < ALL_MENU.length) {
+      const validMenu = this.#selectValidMenu();
       if (validMenu) {
-        OrderMachine.orderableMoney -= validMenu.price;
-        OrderMachine.orderList.push(validMenu);
+        this.#orderableMoney -= validMenu.price;
+        this.#orderList.push(validMenu);
       }
     }
   }
 
-  static calculateChange() {
-    return (
-      OrderMachine.initialOrderableMoney -
-      OrderMachine.orderList.reduce((acc, cur) => acc + cur.price, 0)
-    );
+  #calculateChange() {
+    return this.#initialOrderableMoney - this.#orderList.reduce((acc, cur) => acc + cur.price, 0);
   }
 
   generateRandomOrderList() {
-    OrderMachine.addMainMenus();
-    OrderMachine.selectAndPurchaseMenus();
-    const change = OrderMachine.calculateChange();
+    this.#addMainMenus();
+    this.#selectAndPurchaseMenus();
+    const change = this.#calculateChange();
 
-    return { orderedList: OrderMachine.orderList, change };
+    return { orderedList: this.#orderList, change };
   }
 
-  static createRandomMainMenu() {
+  #createRandomMainMenu() {
     const allMainMenus = ALL_MENU.filter(
       (menu) =>
-        menu.category === CONDITION.essential_order_category &&
-        menu.price <= OrderMachine.orderableMoney,
+        menu.category === CONDITION.essential_order_category && menu.price <= this.#orderableMoney,
     );
     const randomIndexNumArr = allMainMenus.map((menu) => menu.id);
     const randomIndex = generateRandomIndex(randomIndexNumArr);
     return allMainMenus.find((menu) => menu.id === randomIndex);
   }
 
-  static createRandomAllMenu() {
+  #createRandomAllMenu() {
     const randomIndexNumArr = ALL_MENU.map((menu) => menu.id);
     const randomIndex = generateRandomIndex(randomIndexNumArr);
 

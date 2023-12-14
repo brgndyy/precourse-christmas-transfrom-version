@@ -7,6 +7,7 @@ const PROGRESS_MESSAGE = deepFreeze({
   total_order_money: '총 주문 금액',
   orderable_money: (money) => `${money}원`,
   result_start: (date) => `12월 ${date}일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!`,
+  ordered_menu: (menu) => `${menu} 1개`,
 });
 
 export default PROGRESS_MESSAGE;

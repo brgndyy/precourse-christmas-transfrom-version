@@ -1,10 +1,17 @@
 import { Console } from '@woowacourse/mission-utils';
 import DELIMITER from '../constants/delimiters/delimiter.js';
 import PROGRESS_MESSAGE from '../constants/messages/progressMessage.js';
+import formatMoney from '../utils/formatMoney.js';
 
 const OutputView = {
   printStartMessage() {
     Console.print(PROGRESS_MESSAGE.start);
+  },
+
+  printOrderableMoney(orderableMoney) {
+    const formattedMoney = formatMoney(orderableMoney);
+    Console.print(PROGRESS_MESSAGE.total_order_money);
+    Console.print(PROGRESS_MESSAGE.orderable_money(formattedMoney));
   },
 
   printErrorMessage(message) {

@@ -18,6 +18,12 @@ const OutputView = {
     Console.print(PROGRESS_MESSAGE.result_start(date));
   },
 
+  printTotalOrderedList(orderedList) {
+    orderedList.forEach((menu) => {
+      Console.print(PROGRESS_MESSAGE.ordered_menu(menu.menu));
+    });
+  },
+
   printErrorMessage(message) {
     Console.print(message);
   },

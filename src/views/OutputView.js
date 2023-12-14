@@ -14,6 +14,10 @@ const OutputView = {
     Console.print(PROGRESS_MESSAGE.orderable_money(formattedMoney));
   },
 
+  printStartOfResultMessage(date) {
+    Console.print(PROGRESS_MESSAGE.result_start(date));
+  },
+
   printErrorMessage(message) {
     Console.print(message);
   },

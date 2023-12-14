@@ -13,6 +13,7 @@ class App {
     this.#printStartMessage();
     await asyncFunctionHandlerWithError(this.#readVisitDate, this);
     await asyncFunctionHandlerWithError(this.#readOrderableMoney, this);
+    this.#printStartOfResultMessage();
   }
 
   #printStartMessage() {
@@ -33,6 +34,10 @@ class App {
     OutputView.divideLine();
     OutputView.printOrderableMoney(this.#orderableMoney);
     OutputView.divideLine();
+  }
+
+  #printStartOfResultMessage() {
+    OutputView.printStartOfResultMessage(this.#visitDate);
   }
 }
 
